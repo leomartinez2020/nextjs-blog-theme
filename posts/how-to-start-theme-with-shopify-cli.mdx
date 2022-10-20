@@ -1,0 +1,95 @@
+---
+title: How to start a theme with Shopify CLI
+description: "Start a shopify theme from scratch"
+date: Oct 20 2022
+---
+
+Building a Shopify theme from scratch can take a team of developers up to six months. This is because
+of the requirements needed to be met at the Shopify theme store (https://shopify.dev/themes/store/requirements).
+But we can try to build a minimal theme just to see what are the files and directory structure necessary
+to render the simplest theme.
+
+First we create the following directories within our theme folder:
+* assets/
+* config/
+* layout/
+* locales/
+* section/
+* snippets/
+* templates/
+
+Then we create only two files: 
+* layout/theme.liquid
+* config/settings_schema.json
+
+The contents of **theme.liquid** are:
+```
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Shop</title>
+  </head>
+  <body>
+    <h1>Welcome to my Awesome Shop</h1>
+  </body>
+</html>
+```
+
+And withing **settings_schema.json** we add the code snippet:
+```
+[
+    {
+      "name": "theme_info",
+      "theme_name": "My Theme",
+      "theme_author": "Shopify",
+      "theme_version": "1.0.0",
+      "theme_documentation_url": "https:\/\/futuretheme.com",
+      "theme_support_url": "https:\/\/support.futuretheme.com\/"
+    }
+]
+```
+
+Assuming you already installed shopify cli 
+(instructions here: https://shopify.dev/themes/tools/cli/installation), the next step is to connect to
+your shopify store via the command line:
+
+```
+shopify login --store mystore.myshopify.com
+```
+
+And then push the content to the shopify development store:
+```
+shopify theme push
+```
+
+Sometimes there is an error message if you don't have set the connection properly:
+```
+Your environment Ruby version, 2.7.2, is outside of the range supported by the CLI, 2.7.5..<3.2.0, 
+and might cause incompatibility issues.
+You can't use Shopify CLI with development stores if you only have Partner staff member access. 
+If you want to use Shopify CLI to work on a development store, then you should be the store owner or 
+create a staff account on the store.
+
+If you're the store owner, then you need to log in to the store directly using the store URL at 
+least once (for example, using awesomebizz.myshopify.com/admin) before you log in using Shopify CLI. 
+Logging in to the Shopify admin directly connects the development store with your Shopify login.
+```
+To upgrade the Ruby installation on Windows you can try:
+```
+choco upgrade ruby
+```
+
+To solve the second problem I created a staff account and logged in using the new staff member email.
+In the development store you have to go to settings/Users and Permissions and click **Add staff** button.
+
+The new staff member must accept the email invitation and then log in to be able to use the CLI.
+
+You can use the shopify theme check to see if there are any mistakes or missing files. Actually there 
+are a lot of missing files, so the output is going to complain about that.
+```
+shopify theme check
+```
+
