@@ -11,14 +11,10 @@ to render the simplest theme.
 
 ![directory structure](https://shopifyblog.s3.amazonaws.com/shop-theme-architecture.png)
 
-First we create the following directories within our theme folder:
-* assets/
+Although seven directories are required to start a theme, we are going to limit the structure to only
+two folders:
 * config/
 * layout/
-* locales/
-* section/
-* snippets/
-* templates/
 
 Then we create only two files: 
 * layout/theme.liquid
@@ -89,21 +85,22 @@ In the development store you have to go to settings/Users and Permissions and cl
 
 ![add staff](https://shopifyblog.s3.amazonaws.com/shop-add-staff-invite.png)
 
-![add staff](https://shopifyblog.s3.amazonaws.com/shop-add-staff.png)
-
-![command line login](https://shopifyblog.s3.amazonaws.com/shop-command-login.png)
-
+![add staff](https://shopifyblog.s3.amazonaws.com/shop-send-invite.png)
 
 The new staff member must accept the email invitation and then log in to be able to use the CLI.
 
+![command line login](https://shopifyblog.s3.amazonaws.com/shop-command-login.png)
+
 ![successful login](https://shopifyblog.s3.amazonaws.com/shop-successful-login.png)
+
+After you are authenticated you can push your changes to the development store.
 
 The next command checks whether the folder architecture is compliant with what shopify requires.
 ```
 shopify theme check
 ```
 
-You can use the _shopify theme_ check to see if there are any mistakes or missing files. Actually there 
+You can use the _shopify theme check_ to see if there are any mistakes or missing files. Actually there 
 are a lot of missing files, so the output is going to complain about that.
 
 ![command errors](https://shopifyblog.s3.amazonaws.com/shop-errors.png)
