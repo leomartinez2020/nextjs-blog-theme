@@ -3,117 +3,54 @@ title: How to start a theme with theme kit
 description: "Start a shopify theme from scratch"
 date: Apr 30 2023
 ---
+
+In order to start a them from scratch using theme kit we have to download theme kit. On linux
+it can be done with the next command:
+```
+curl -s https://shopify.dev/themekit.py | sudo python3
+```
+On MacOS we can use Homebrew:
+```
+brew tap shopify/shopify
+brew install themekit
+```
+
+And on Windows we can use Chocolatey:
+```
+choco install themekit
+```
+
+After that the administrator has open the Theme Access App as shown in the image:
+![theme access app](/theme-access-app.png)
+
+Then the administartor creates the password and sends it to the developer's email.
 ![theme password](/theme-access-pwd.png)
 
-Building a Shopify theme from scratch can take a team of developers up to six months. This is because
-of the requirements needed to be met at the Shopify theme store (https://shopify.dev/themes/store/requirements).
-But we can try to build a minimal theme just to see what are the files and directory structure necessary
-to render the simplest theme.
-
-![directory structure](https://shopifyblog.s3.amazonaws.com/shop-theme-architecture.png)
-
-Although seven directories are required to start a theme, we are going to limit the structure to only
-two folders:
-* config/
-* layout/
-
-Then we create only two files: 
-* layout/theme.liquid
-* config/settings_schema.json
-
-The contents of **theme.liquid** are:
+The developer retrieves the password from the email and then a new theme can be created
+using this command:
 ```
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Shop</title>
-  </head>
-  <body>
-    <h1>Welcome to my Awesome Shop</h1>
-  </body>
-</html>
+theme new --password=shptka_700d05w88dc81tyc8162022da283ge88 --store="mystore.myshopify.com" --name=mytheme
 ```
 
-And withing **settings_schema.json** we add the code snippet:
+The following files and directories are created:
 ```
-[
-    {
-      "name": "theme_info",
-      "theme_name": "My Theme",
-      "theme_author": "Shopify",
-      "theme_version": "1.0.0",
-      "theme_documentation_url": "https:\/\/futuretheme.com",
-      "theme_support_url": "https:\/\/support.futuretheme.com\/"
-    }
-]
-```
-One way of connecting to the development store is to push these files to a Github repository and then 
-connect the store to Github. This is done in the admin section of the store where there is a 
-dropdown to add a theme from Github.
-
-![connect to github](https://shopifyblog.s3.amazonaws.com/shop-add-theme-github.png)
-
-![connect to github](https://shopifyblog.s3.amazonaws.com/shop-connect-theme.png)
-
-After you connect to your Github account, you have to choose the repository where the code resides.
-
-Assuming you already installed shopify cli 
-(instructions here: https://shopify.dev/themes/tools/cli/installation), the next step is to connect to
-your shopify store via the command line:
-
-```
-shopify login --store mystore.myshopify.com
+assets  config  config.yml  layout  locales  templates
 ```
 
-And then push the content to the shopify development store:
+With the next command we can see what themes have been created:
 ```
-shopify theme push
-```
-
-Sometimes there is an error message if you don't have set the connection properly:
-```
-Your environment Ruby version, 2.7.2, is outside of the range supported by the CLI, 2.7.5..<3.2.0, 
-and might cause incompatibility issues.
-You can't use Shopify CLI with development stores if you only have Partner staff member access. 
-If you want to use Shopify CLI to work on a development store, then you should be the store owner or 
-create a staff account on the store.
-
-If you're the store owner, then you need to log in to the store directly using the store URL at 
-least once (for example, using awesomebizz.myshopify.com/admin) before you log in using Shopify CLI. 
-Logging in to the Shopify admin directly connects the development store with your Shopify login.
-```
-To upgrade the Ruby installation on Windows you can try:
-```
-choco upgrade ruby
+theme get --list --password=shptka_700d05w88dc81tyc8162022da283ge88 --store="mystore.myshopify.com"
 ```
 
-To solve the second problem I created a staff account and logged in using the new staff member email.
-In the development store you have to go to settings/Users and Permissions and click **Add staff** button.
-
-![add staff](https://shopifyblog.s3.amazonaws.com/shop-add-staff-invite.png)
-
-![add staff](https://shopifyblog.s3.amazonaws.com/shop-send-invite.png)
-
-The new staff member must accept the email invitation and then log in to be able to use the CLI.
-
-![command line login](https://shopifyblog.s3.amazonaws.com/shop-command-login.png)
-
-![successful login](https://shopifyblog.s3.amazonaws.com/shop-successful-login.png)
-
-After you are authenticated you can push your changes to the development store.
-
-The next command checks whether the folder architecture is compliant with what shopify requires.
+In order to keep track of the changes in the local file system and push the changes to the Shopify
+store we could use this command:
 ```
-shopify theme check
+theme watch
 ```
 
-You can use the _shopify theme check_ to see if there are any mistakes or missing files. Actually there 
-are a lot of missing files, so the output is going to complain about that.
-
-![command errors](https://shopifyblog.s3.amazonaws.com/shop-errors.png)
-
-This is how the landing page looks like:
-![](https://shopifyblog.s3.amazonaws.com/shop-main-page.png)
+If we want to avoid pushing changes every time we save a file we could use 
+ `theme deploy`. `theme deploy` will replace all files in the store. A better option
+ could be to push chages of a single file like in the next command:
+```
+ theme deploy templates/404.liquid
+```
